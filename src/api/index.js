@@ -1,12 +1,11 @@
-import { Router } from 'express'
-import user from './user'
-import auth from './auth'
-import passwordReset from './password-reset'
-import post from './post'
-import userPost from './user/post'
-import comment from './comment'
+import { Router } from "express";
+import user from "./user";
+import auth from "./auth";
+import passwordReset from "./password-reset";
+import post from "./post";
+import userPost from "./user/post";
 
-const router = new Router()
+const router = new Router();
 
 /**
  * @apiDefine master Master access only
@@ -31,12 +30,11 @@ const router = new Router()
  * @apiParam {String[]} [sort=-createdAt] Order of returned items.
  * @apiParam {String[]} [fields] Fields to be returned.
  */
-router.use('/users', user)
-router.use('/auth', auth)
-router.use('/password-resets', passwordReset)
-router.use('/posts', post)
-router.use('/posts', post)
-router.use('/user/posts', userPost)
-router.use('/comments', comment)
+router.use("/users", user);
+router.use("/auth", auth);
+router.use("/password-resets", passwordReset);
+router.use("/posts", post);
+router.use("/posts", post);
+router.use("/user/posts", userPost);
 
-export default router
+export default router;

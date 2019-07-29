@@ -1,28 +1,33 @@
-import mongoose, { Schema } from 'mongoose'
+import mongoose, { Schema } from "mongoose";
 
-const postSchema = new Schema({
-  title: {
-    type: String
+const postSchema = new Schema(
+  {
+    title: {
+      type: String
+    },
+    content: {
+      type: String
+    },
+    author: {
+      type: String
+    },
+    timestamp: {
+      type: String
+    }
   },
-  content: {
-    type: String
-  },
-  author: {
-    type: String
-  },
-  timestamp: {
-    type: String
+  {
+    timestamps: true,
+    toJSON: {
+      virtuals: true,
+      transform: (obj, ret) => {
+        delete ret._id;
+      }
+    }
   }
-}, {
-  timestamps: true,
-  toJSON: {
-    virtuals: true,
-    transform: (obj, ret) => { delete ret._id }
-  }
-})
+);
 
 postSchema.methods = {
-  view (full) {
+  view(full) {
     const view = {
       // simple view
       id: this.id,
@@ -32,16 +37,18 @@ postSchema.methods = {
       timestamp: this.timestamp,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt
-    }
+    };
 
-    return full ? {
-      ...view
-      // add properties for a full view
-    } : view
+    return full
+      ? {
+          ...view
+          // add properties for a full view
+        }
+      : view;
   }
-}
+};
 
-const model = mongoose.model('Post', postSchema)
+const model = mongoose.model("Post", postSchema);
 
-export const schema = model.schema
-export default model
+export const schema = model.schema;
+export default model;
