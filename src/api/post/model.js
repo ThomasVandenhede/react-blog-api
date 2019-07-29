@@ -5,13 +5,10 @@ const postSchema = new Schema(
     title: {
       type: String
     },
-    content: {
+    body: {
       type: String
     },
-    author: {
-      type: String
-    },
-    timestamp: {
+    userId: {
       type: String
     }
   },
@@ -32,9 +29,8 @@ postSchema.methods = {
       // simple view
       id: this.id,
       title: this.title,
-      content: this.content,
-      author: this.author,
-      timestamp: this.timestamp,
+      body: this.body,
+      userId: this.userId,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt
     };

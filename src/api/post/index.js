@@ -1,34 +1,31 @@
 import { Router } from "express";
 import { middleware as query } from "querymen";
-import { middleware as body } from "bodymen";
+import bodymen from "bodymen";
 import { create, index, show, update, destroy } from "./controller";
 import { schema } from "./model";
 export { default as Post, schema } from "./model";
 
 const router = new Router();
-const { title, content, author, timestamp } = schema.tree;
+const { title, body, userId } = schema.tree;
 
 /**
  * @api {post} /posts Create post
  * @apiName CreatePost
  * @apiGroup Post
  * @apiParam title Post's title.
- * @apiParam content Post's content.
- * @apiParam author Post's author.
- * @apiParam timestamp Post's timestamp.
+ * @apiParam body Post's body.
+ * @apiParam authorId Post's authorId.
  * @apiSuccess {Object} post Post's data.
  * @apiError {Object} 400 Some parameters may contain invalid values.
  * @apiError 404 Post not found.
  */
-router.post("/", body({ title, content, author, timestamp }), create);
+router.post("/", bodymen.middleware({ title, body, userId }), create);
 
 /**
  * @api {get} /posts Retrieve posts
  * @apiName RetrievePosts
  * @apiGroup Post
  * @apiUse listParams
- * @apiSuccess {Number} count Total amount of posts.
- * @apiSuccess {Object[]} rows List of posts.
  * @apiError {Object} 400 Some parameters may contain invalid values.
  */
 router.get("/", query(), index);
@@ -48,14 +45,13 @@ router.get("/:id", show);
  * @apiName UpdatePost
  * @apiGroup Post
  * @apiParam title Post's title.
- * @apiParam content Post's content.
- * @apiParam author Post's author.
- * @apiParam timestamp Post's timestamp.
+ * @apiParam body Post's body.
+ * @apiParam userId Post's userId.
  * @apiSuccess {Object} post Post's data.
  * @apiError {Object} 400 Some parameters may contain invalid values.
  * @apiError 404 Post not found.
  */
-router.put("/:id", body({ title, content, author, timestamp }), update);
+router.put("/:id", bodymen.middleware({ title, body, userId }), update);
 
 /**
  * @api {delete} /posts/:id Delete post

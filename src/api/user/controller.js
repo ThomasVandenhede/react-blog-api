@@ -18,6 +18,16 @@ export const show = ({ params }, res, next) =>
 
 export const showMe = ({ user }, res) => res.json(user.view(true));
 
+export const showPosts = (
+  { params, querymen: { query, select, cursor } },
+  res,
+  next
+) =>
+  Post.find({ userId: params.id, ...query }, select, cursor)
+    .then(posts => posts.map(post => post.view()))
+    .then(success(res))
+    .catch(next);
+
 export const create = ({ bodymen: { body } }, res, next) =>
   User.create(body)
     .then(user => {

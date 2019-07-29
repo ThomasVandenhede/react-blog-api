@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { middleware as query } from "querymen";
-import { middleware as body } from "bodymen";
+import bodymen from "bodymen";
 import {
   password as passwordAuth,
   master,
@@ -10,6 +10,7 @@ import {
   index,
   showMe,
   show,
+  showPosts,
   create,
   update,
   updatePassword,
@@ -55,6 +56,15 @@ router.get("/me", token({ required: true }), showMe);
 router.get("/:id", show);
 
 /**
+ * @api {get} /users/:id/posts Retrieve user posts
+ * @apiName RetrieveUserPosts
+ * @apiGroup User
+ * @apiPermission public
+ * @apiSuccess {Object[]} posts List of posts.
+ */
+router.get("/:id/posts", query(), showPosts);
+
+/**
  * @api {post} /users Create user
  * @apiName CreateUser
  * @apiGroup User
@@ -73,7 +83,7 @@ router.get("/:id", show);
 router.post(
   "/",
   master(),
-  body({ email, password, username, picture, role }),
+  bodymen.middleware({ email, password, username, picture, role }),
   create
 );
 
@@ -93,7 +103,7 @@ router.post(
 router.put(
   "/:id",
   token({ required: true }),
-  body({ username, picture }),
+  bodymen.middleware({ username, picture }),
   update
 );
 
@@ -108,7 +118,12 @@ router.put(
  * @apiError 401 Current user access only.
  * @apiError 404 User not found.
  */
-router.put("/:id/password", passwordAuth(), body({ password }), updatePassword);
+router.put(
+  "/:id/password",
+  passwordAuth(),
+  bodymen.middleware({ password }),
+  updatePassword
+);
 
 /**
  * @api {delete} /users/:id Delete user
