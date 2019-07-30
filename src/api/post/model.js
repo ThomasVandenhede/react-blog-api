@@ -2,14 +2,16 @@ import mongoose, { Schema } from "mongoose";
 
 const postSchema = new Schema(
   {
-    title: {
-      type: String
-    },
     body: {
       type: String
     },
-    userId: {
-      type: String
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User"
+    },
+    author: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User"
     }
   },
   {
@@ -28,9 +30,9 @@ postSchema.methods = {
     const view = {
       // simple view
       id: this.id,
-      title: this.title,
       body: this.body,
-      userId: this.userId,
+      user: this.user,
+      author: this.author,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt
     };

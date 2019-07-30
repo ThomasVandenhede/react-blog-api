@@ -20,7 +20,16 @@ import { schema } from "./model";
 export { default as User, schema } from "./model";
 
 const router = new Router();
-const { email, password, username, picture, role } = schema.tree;
+const {
+  email,
+  password,
+  username,
+  picture,
+  role,
+  firstName,
+  lastName,
+  gender
+} = schema.tree;
 
 /**
  * @api {get} /users Retrieve users
@@ -31,9 +40,8 @@ const { email, password, username, picture, role } = schema.tree;
  * @apiUse listParams
  * @apiSuccess {Object[]} users List of users.
  * @apiError {Object} 400 Some parameters may contain invalid values.
- * @apiError 401 Admin access only.
  */
-router.get("/", token({ required: true, roles: ["admin"] }), query(), index);
+router.get("/", token({ required: true }), query(), index);
 
 /**
  * @api {get} /users/me Retrieve current user
@@ -83,7 +91,16 @@ router.get("/:id/posts", query(), showPosts);
 router.post(
   "/",
   master(),
-  bodymen.middleware({ email, password, username, picture, role }),
+  bodymen.middleware({
+    email,
+    password,
+    username,
+    picture,
+    role,
+    firstName,
+    lastName,
+    gender
+  }),
   create
 );
 
@@ -103,7 +120,7 @@ router.post(
 router.put(
   "/:id",
   token({ required: true }),
-  bodymen.middleware({ username, picture }),
+  bodymen.middleware({ firstName, lastName, gender, picture }),
   update
 );
 

@@ -1,25 +1,25 @@
 import { Router } from "express";
 import { middleware as query } from "querymen";
 import bodymen from "bodymen";
-import { create, index, show, update, destroy } from "./controller";
+import { create, index, show, destroy } from "./controller";
 import { schema } from "./model";
 export { default as Post, schema } from "./model";
 
 const router = new Router();
-const { title, body, userId } = schema.tree;
+const { body, userId, authorId } = schema.tree;
 
 /**
  * @api {post} /posts Create post
  * @apiName CreatePost
  * @apiGroup Post
- * @apiParam title Post's title.
  * @apiParam body Post's body.
+ * @apiParam userId Post's userId.
  * @apiParam authorId Post's authorId.
  * @apiSuccess {Object} post Post's data.
  * @apiError {Object} 400 Some parameters may contain invalid values.
  * @apiError 404 Post not found.
  */
-router.post("/", bodymen.middleware({ title, body, userId }), create);
+router.post("/", bodymen.middleware({ body, userId, authorId }), create);
 
 /**
  * @api {get} /posts Retrieve posts
@@ -39,19 +39,6 @@ router.get("/", query(), index);
  * @apiError 404 Post not found.
  */
 router.get("/:id", show);
-
-/**
- * @api {put} /posts/:id Update post
- * @apiName UpdatePost
- * @apiGroup Post
- * @apiParam title Post's title.
- * @apiParam body Post's body.
- * @apiParam userId Post's userId.
- * @apiSuccess {Object} post Post's data.
- * @apiError {Object} 400 Some parameters may contain invalid values.
- * @apiError 404 Post not found.
- */
-router.put("/:id", bodymen.middleware({ title, body, userId }), update);
 
 /**
  * @api {delete} /posts/:id Delete post

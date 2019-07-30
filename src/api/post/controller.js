@@ -1,8 +1,22 @@
 import { success, notFound } from "../../services/response/";
 import { Post } from ".";
 
-export const create = ({ bodymen: { body } }, res, next) =>
-  Post.create(body)
+export const create = (
+  {
+    bodymen: {
+      body: { body, userId, authorId }
+    }
+  },
+  res,
+  next
+) =>
+  Post.create({ body, user: userId, author: authorId })
+    .then(post =>
+      post
+        .populate("user")
+        .populate("author")
+        .execPopulate()
+    )
     .then(post => post.view(true))
     .then(success(res, 201))
     .catch(next);
@@ -17,14 +31,6 @@ export const show = ({ params }, res, next) =>
   Post.findById(params.id)
     .then(notFound(res))
     .then(post => (post ? post.view() : null))
-    .then(success(res))
-    .catch(next);
-
-export const update = ({ bodymen: { body }, params }, res, next) =>
-  Post.findById(params.id)
-    .then(notFound(res))
-    .then(post => (post ? Object.assign(post, body).save() : null))
-    .then(post => (post ? post.view(true) : null))
     .then(success(res))
     .catch(next);
 

@@ -6,12 +6,14 @@ import mongooseKeywords from "mongoose-keywords";
 import { env } from "../../config";
 
 const roles = ["user", "admin"];
+const genders = ["male", "female"];
 
 const userSchema = new Schema(
   {
     email: {
       type: String,
       match: /^\S+@\S+\.\S+$/,
+      index: true,
       required: true,
       unique: true,
       trim: true,
@@ -20,10 +22,11 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: true,
-      minlength: 6
+      minlength: 8
     },
     username: {
       type: String,
+      unique: true,
       index: true,
       trim: true
     },
@@ -37,8 +40,9 @@ const userSchema = new Schema(
     },
     gender: {
       type: String,
-      enum: ["male", "female"]
+      enum: genders
     },
+    address: Object,
     role: {
       type: String,
       enum: roles,
@@ -47,6 +51,11 @@ const userSchema = new Schema(
     picture: {
       type: String,
       trim: true
+    },
+    description: String,
+    verified: {
+      type: Boolean,
+      default: false
     }
   },
   {
@@ -88,10 +97,20 @@ userSchema.pre("save", function(next) {
 userSchema.methods = {
   view(full) {
     let view = {};
-    let fields = ["id", "username", "picture"];
+    let fields = [
+      "id",
+      "username",
+      "firstName",
+      "lastName",
+      "email",
+      "picture",
+      "address",
+      "gender",
+      "role"
+    ];
 
     if (full) {
-      fields = [...fields, "email", "createdAt"];
+      fields = [...fields, "createdAt", "updatedAt", "friends", "verified"];
     }
 
     fields.forEach(field => {

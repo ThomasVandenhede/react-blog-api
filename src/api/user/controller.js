@@ -2,6 +2,8 @@ import { success, notFound } from "../../services/response/";
 import { User } from ".";
 import { Post } from "../post";
 import { sign } from "../../services/jwt";
+import mongoose from "mongoose";
+const ObjectId = mongoose.Types.ObjectId;
 
 export const index = ({ querymen: { query, select, cursor } }, res, next) =>
   User.find(query, select, cursor)
@@ -23,7 +25,16 @@ export const showPosts = (
   res,
   next
 ) =>
-  Post.find({ userId: params.id, ...query }, select, cursor)
+  Post.find({ user: new ObjectId(params.id), ...query }, select, cursor)
+    .populate({
+      path: "user",
+      select: "firstName lastName username email picture"
+    })
+    .populate({
+      path: "author",
+      select: "firstName lastName username email picture"
+    })
+    .exec()
     .then(posts => posts.map(post => post.view()))
     .then(success(res))
     .catch(next);
