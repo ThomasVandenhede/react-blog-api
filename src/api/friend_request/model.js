@@ -2,14 +2,12 @@ import mongoose, { Schema } from "mongoose";
 
 const friendRequestSchema = new Schema(
   {
-    from: {
-      type: String
-    },
-    to: {
-      type: String
-    },
+    from: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    to: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     status: {
-      type: String
+      type: String,
+      enum: ["pending", "accepted", "rejected"],
+      default: "pending"
     }
   },
   {

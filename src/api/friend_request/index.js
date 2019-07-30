@@ -52,7 +52,7 @@ router.get("/:id", show);
  * @apiError {Object} 400 Some parameters may contain invalid values.
  * @apiError 404 Friend request not found.
  */
-router.put("/:id", body({ from, to, status }), update);
+router.put("/:id", body({ status }), update);
 
 /**
  * @api {delete} /friend_requests/:id Delete friend request
