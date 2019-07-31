@@ -4,19 +4,34 @@
 
 - [Auth](#auth)
 	- [Authenticate](#authenticate)
-	- [Authenticate with Facebook](#authenticate-with-facebook)
-	- [Authenticate with Google](#authenticate-with-google)
+	
+- [ChatMessage](#chatmessage)
+	- [Retrieve chat messages](#retrieve-chat-messages)
+	
+- [FriendRequest](#friendrequest)
+	- [Create friend request](#create-friend-request)
+	- [Delete friend request](#delete-friend-request)
+	- [Retrieve friend request](#retrieve-friend-request)
+	- [Retrieve friend requests](#retrieve-friend-requests)
+	- [Update friend request](#update-friend-request)
 	
 - [PasswordReset](#passwordreset)
 	- [Send email](#send-email)
 	- [Submit password](#submit-password)
 	- [Verify token](#verify-token)
 	
+- [Post](#post)
+	- [Create post](#create-post)
+	- [Delete post](#delete-post)
+	- [Retrieve post](#retrieve-post)
+	- [Retrieve posts](#retrieve-posts)
+	
 - [User](#user)
 	- [Create user](#create-user)
 	- [Delete user](#delete-user)
 	- [Retrieve current user](#retrieve-current-user)
 	- [Retrieve user](#retrieve-user)
+	- [Retrieve user posts](#retrieve-user-posts)
 	- [Retrieve users](#retrieve-users)
 	- [Update password](#update-password)
 	- [Update user](#update-user)
@@ -43,31 +58,87 @@
 |---------|-----------|--------------------------------------|
 | access_token			| String			|  <p>Master access_token.</p>							|
 
-## Authenticate with Facebook
+# ChatMessage
+
+## Retrieve chat messages
 
 
 
-	POST /auth/facebook
-
-
-### Parameters
-
-| Name    | Type      | Description                          |
-|---------|-----------|--------------------------------------|
-| access_token			| String			|  <p>Facebook user accessToken.</p>							|
-
-## Authenticate with Google
-
-
-
-	POST /auth/google
+	GET /chat
 
 
 ### Parameters
 
 | Name    | Type      | Description                          |
 |---------|-----------|--------------------------------------|
-| access_token			| String			|  <p>Google user accessToken.</p>							|
+| q			| String			| **optional** <p>Query to search.</p>							|
+| page			| Number			| **optional** <p>Page number.</p>							|
+| limit			| Number			| **optional** <p>Amount of returned items.</p>							|
+| sort			| String[]			| **optional** <p>Order of returned items.</p>							|
+| fields			| String[]			| **optional** <p>Fields to be returned.</p>							|
+
+# FriendRequest
+
+## Create friend request
+
+
+
+	POST /friend_requests
+
+
+### Parameters
+
+| Name    | Type      | Description                          |
+|---------|-----------|--------------------------------------|
+| from			| 			|  <p>Friend request's from.</p>							|
+| to			| 			|  <p>Friend request's to.</p>							|
+| status			| 			|  <p>Friend request's status.</p>							|
+
+## Delete friend request
+
+
+
+	DELETE /friend_requests/:id
+
+
+## Retrieve friend request
+
+
+
+	GET /friend_requests/:id
+
+
+## Retrieve friend requests
+
+
+
+	GET /friend_requests
+
+
+### Parameters
+
+| Name    | Type      | Description                          |
+|---------|-----------|--------------------------------------|
+| q			| String			| **optional** <p>Query to search.</p>							|
+| page			| Number			| **optional** <p>Page number.</p>							|
+| limit			| Number			| **optional** <p>Amount of returned items.</p>							|
+| sort			| String[]			| **optional** <p>Order of returned items.</p>							|
+| fields			| String[]			| **optional** <p>Fields to be returned.</p>							|
+
+## Update friend request
+
+
+
+	PUT /friend_requests/:id
+
+
+### Parameters
+
+| Name    | Type      | Description                          |
+|---------|-----------|--------------------------------------|
+| from			| 			|  <p>Friend request's from.</p>							|
+| to			| 			|  <p>Friend request's to.</p>							|
+| status			| 			|  <p>Friend request's status.</p>							|
 
 # PasswordReset
 
@@ -105,6 +176,54 @@
 	GET /password-resets/:token
 
 
+# Post
+
+## Create post
+
+
+
+	POST /posts
+
+
+### Parameters
+
+| Name    | Type      | Description                          |
+|---------|-----------|--------------------------------------|
+| body			| 			|  <p>Post's body.</p>							|
+| userId			| 			|  <p>Post's userId.</p>							|
+| authorId			| 			|  <p>Post's authorId.</p>							|
+
+## Delete post
+
+
+
+	DELETE /posts/:id
+
+
+## Retrieve post
+
+
+
+	GET /posts/:id
+
+
+## Retrieve posts
+
+
+
+	GET /posts
+
+
+### Parameters
+
+| Name    | Type      | Description                          |
+|---------|-----------|--------------------------------------|
+| q			| String			| **optional** <p>Query to search.</p>							|
+| page			| Number			| **optional** <p>Page number.</p>							|
+| limit			| Number			| **optional** <p>Amount of returned items.</p>							|
+| sort			| String[]			| **optional** <p>Order of returned items.</p>							|
+| fields			| String[]			| **optional** <p>Fields to be returned.</p>							|
+
 # User
 
 ## Create user
@@ -121,7 +240,7 @@
 | access_token			| String			|  <p>Master access_token.</p>							|
 | email			| String			|  <p>User's email.</p>							|
 | password			| String			|  <p>User's password.</p>							|
-| name			| String			| **optional** <p>User's name.</p>							|
+| username			| String			| **optional** <p>User's username.</p>							|
 | picture			| String			| **optional** <p>User's picture.</p>							|
 | role			| String			| **optional** <p>User's role.</p>							|
 
@@ -156,6 +275,13 @@
 
 
 	GET /users/:id
+
+
+## Retrieve user posts
+
+
+
+	GET /users/:id/posts
 
 
 ## Retrieve users
@@ -206,7 +332,11 @@
 | Name    | Type      | Description                          |
 |---------|-----------|--------------------------------------|
 | access_token			| String			|  <p>User access_token.</p>							|
-| name			| String			| **optional** <p>User's name.</p>							|
+| username			| String			| **optional** <p>User's username.</p>							|
 | picture			| String			| **optional** <p>User's picture.</p>							|
+| firstName			| String			| **optional** <p>User's firstName.</p>							|
+| lastName			| String			| **optional** <p>User's lastName.</p>							|
+| gender			| String			| **optional** <p>User's gender.</p>							|
+| description			| String			| **optional** <p>User's description.</p>							|
 
 
