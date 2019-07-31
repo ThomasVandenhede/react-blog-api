@@ -20,16 +20,16 @@ export const create = (
       const { user, token } = reset;
       link = `${link.replace(/\/$/, "")}/${token}`;
       const content = `
-        Hey, ${user.username}.<br><br>
-        You requested a new password for your react-blog-api account.<br>
-        Please use the following link to set a new password. It will expire in 1 hour.<br><br>
+        Salut, ${user.username}.<br><br>
+        Tu as fait une demande de nouveau mot de passe pour ton compte sur react-blog-api.<br>
+        Il te suffit de suivre le lien ci-dessous pour le réinitialiser. Ce lien expirera au bout d'une heure.<br><br>
         <a href="${link}">${link}</a><br><br>
-        If you didn't make this request then you can safely ignore this email. :)<br><br>
-        &mdash; react-blog-api Team
+        Si tu n'es pas à l'origine de cette demande, tu peux ignorer ce courriel tranquillement. :)<br><br>
+        &mdash; L'équipe react-blog-api
       `;
       return sendMail({
         toEmail: email,
-        subject: "react-blog-api - Password Reset",
+        subject: "Réinitialisation de mot de passe - react-blog-api",
         content
       });
     })
