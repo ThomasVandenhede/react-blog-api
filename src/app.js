@@ -1,11 +1,16 @@
 import http from "http";
+import socket from "socket.io";
 import { env, mongo, port, ip, apiRoot } from "./config";
 import mongoose from "./services/mongoose";
 import express from "./services/express";
+import { socketEvents } from "./services/sockets";
 import api from "./api";
 
 const app = express(apiRoot, api);
 const server = http.createServer(app);
+const io = socket(server);
+
+io.use(socketEvents(io));
 
 mongoose.connect(mongo.uri);
 mongoose.Promise = Promise;

@@ -1,4 +1,5 @@
 import { Router } from "express";
+import chat from "./chat";
 import user from "./user";
 import auth from "./auth";
 import passwordReset from "./password-reset";
@@ -30,6 +31,7 @@ const router = new Router();
  * @apiParam {String[]} [sort=-createdAt] Order of returned items.
  * @apiParam {String[]} [fields] Fields to be returned.
  */
+router.use("/chat", chat);
 router.use("/users", user);
 router.use("/auth", auth);
 router.use("/password-resets", passwordReset);
