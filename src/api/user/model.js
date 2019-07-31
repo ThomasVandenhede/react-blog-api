@@ -106,7 +106,8 @@ userSchema.methods = {
       "picture",
       "address",
       "gender",
-      "role"
+      "role",
+      "description"
     ];
 
     if (full) {

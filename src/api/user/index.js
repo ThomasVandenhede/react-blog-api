@@ -28,7 +28,8 @@ const {
   role,
   firstName,
   lastName,
-  gender
+  gender,
+  description
 } = schema.tree;
 
 /**
@@ -52,6 +53,8 @@ router.get("/", token({ required: true }), query(), index);
  * @apiSuccess {Object} user User's data.
  */
 router.get("/me", token({ required: true }), showMe);
+
+// router.get("/me/friends/:friendId", token({ require: true }), showMyFriend);
 
 /**
  * @api {get} /users/:id Retrieve user
@@ -99,7 +102,8 @@ router.post(
     role,
     firstName,
     lastName,
-    gender
+    gender,
+    description
   }),
   create
 );
@@ -112,6 +116,10 @@ router.post(
  * @apiParam {String} access_token User access_token.
  * @apiParam {String} [username] User's username.
  * @apiParam {String} [picture] User's picture.
+ * @apiParam {String} [firstName] User's firstName.
+ * @apiParam {String} [lastName] User's lastName.
+ * @apiParam {String} [gender] User's gender.
+ * @apiParam {String} [description] User's description.
  * @apiSuccess {Object} user User's data.
  * @apiError {Object} 400 Some parameters may contain invalid values.
  * @apiError 401 Current user or admin access only.
@@ -120,7 +128,7 @@ router.post(
 router.put(
   "/:id",
   token({ required: true }),
-  bodymen.middleware({ firstName, lastName, gender, picture }),
+  bodymen.middleware({ firstName, lastName, gender, picture, description }),
   update
 );
 
