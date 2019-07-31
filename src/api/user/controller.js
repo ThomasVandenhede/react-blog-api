@@ -20,6 +20,17 @@ export const show = ({ params }, res, next) =>
 
 export const showMe = ({ user }, res) => res.json(user.view(true));
 
+export const searchUsers = ({ querymen: { query } }, res, next) => {
+  const { keywords } = query;
+
+  return User.find({
+    username: { $regex: keywords }
+  })
+    .then(users => users.map(user => user.view()))
+    .then(success(res))
+    .catch(next);
+};
+
 export const showPosts = (
   { params, querymen: { query, select, cursor } },
   res,

@@ -11,6 +11,7 @@ import {
   showMe,
   show,
   showPosts,
+  searchUsers,
   create,
   update,
   updatePassword,
@@ -53,6 +54,16 @@ router.get("/", token({ required: true }), query(), index);
  * @apiSuccess {Object} user User's data.
  */
 router.get("/me", token({ required: true }), showMe);
+
+/**
+ * @api {get} /users/search Search users
+ * @apiName SearchRsers
+ * @apiGroup User
+ * @apiPermission user
+ * @apiParam {String} access_token User access_token.
+ * @apiSuccess {Object} user User's data.
+ */
+router.get("/search", token({ required: true }), query(), searchUsers);
 
 // router.get("/me/friends/:friendId", token({ require: true }), showMyFriend);
 
